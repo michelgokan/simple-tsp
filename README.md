@@ -21,11 +21,11 @@ If you make a mistake (!) and decided to use this repository (you probably shoul
   ```
 * To run the training:
   ```
-  python3.10 train.py
+  python3.11 train.py
   ```
 * To use the trained model to find the shortest path:
   ```bash
-  python3.10 execute.py 
+  python3.11 execute.py 
   ```
 ### Compatibility
 > I utilized Python version 3.11.15 in my local environment. I strongly recommend using this version or a higher one, as I encountered difficulties when attempting to run the code with older Python versions.
