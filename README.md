@@ -1,4 +1,4 @@
-# Simple TSP using PyTorch
+# Simple Traveling Sales Man (TSP) solver using Reinforcement Learning (PyTorch)
 ### Introduction
 This repository is a revised debugger-ready fork of 
 'Appendix repository for Medium article ["Routing Traveling Salesmen on Random Graphs using Reinforcement Learning"](https://medium.com/unit8-machine-learning-publication/routing-traveling-salesmen-on-random-graphs-using-reinforcement-learning-in-pytorch-7378e4814980)'. 
