@@ -12,7 +12,7 @@ If you make a mistake (!) and decided to use this repository (you probably shoul
 
 * copy/paste config.ini.sample into config.ini and replace variables in it
 * run followings:
-* ```bash
+  ```bash
   pip3.11 install -r requirements.txt 
     ```
 * Follow steps in ["Weights & Biases quickstart page"](https://docs.wandb.ai/quickstart)
@@ -28,4 +28,4 @@ If you make a mistake (!) and decided to use this repository (you probably shoul
   python3.11 execute.py 
   ```
 ### Compatibility
-> I utilized Python version 3.11.15 in my local environment. I strongly recommend using this version or a higher one, as I encountered difficulties when attempting to run the code with older Python versions.
+> I utilized Python version 3.11.15 in my local environment. I strongly recommend using this version or a higher one, as I encountered difficulties when attempting to run the code with older Python versions, e.g., 3.11.12 didn't work because of a compatibility error.

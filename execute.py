@@ -6,10 +6,11 @@ import torch
 
 import variables as v
 from helpers import get_graph_mat, init_model, state2tens, is_state_final, total_distance, \
-    plot_solution
+    plot_solution, download_wandb_models_and_return_list
 
 """ Get file with smallest distance
 """
+a = download_wandb_models_and_return_list(v.WANDB_PROJECT_NAME, v.WANDB_RUN_ID)
 all_lengths_fnames = [f for f in os.listdir(v.FOLDER_NAME) if f.endswith('.tar')]
 shortest_fname = sorted(all_lengths_fnames, key=lambda s: float(s.split('.tar')[0].split('_')[-1]))[0]
 print('shortest avg length found: {}'.format(shortest_fname.split('.tar')[0].split('_')[-1]))
@@ -34,14 +35,9 @@ for sample in range(10):
 
         solution = solution + [next_node]
         current_state = v.State(partial_solution=solution, W=W, coords=coords)
-    plt.close()
-    plt.figure()
-    plot_solution(coords, W, solution)
-    plt.title('model / len = {}'.format(total_distance(solution, W)))
 
     # for comparison, plot a random solution
-    plt.figure()
     random_solution = list(range(NR_NODES))
-    plot_solution(coords, W, random_solution)
-    plt.title('random / len = {}'.format(total_distance(random_solution, W)))
-    plt.show()
+    plt.close()
+    plot_solution(coords, W, solution, 'model / len = {}'.format(total_distance(solution, W)))
+    plot_solution(coords, W, random_solution, 'random / len = {}'.format(total_distance(random_solution, W)))

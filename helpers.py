@@ -1,23 +1,14 @@
-import math
 import os
 import random
-import time
-from collections import namedtuple
 
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
-from scipy.signal import medfilt
-from scipy.sparse import csr_matrix
-from scipy.sparse.csgraph import connected_components
 from scipy.spatial import distance_matrix
-from sklearn.neighbors import NearestNeighbors
 
 import variables as v
+import wandb
 from qfunction import QFunction
 from qnet import QNet
 
@@ -113,8 +104,7 @@ def init_model(fname=None):
     return Q_func, Q_net, optimizer, lr_scheduler
 
 
-def checkpoint_model(model, optimizer, lr_scheduler, loss,
-                     episode, avg_length):
+def checkpoint_model(model, optimizer, lr_scheduler, loss, episode, avg_length):
     if not os.path.exists(v.FOLDER_NAME):
         os.makedirs(v.FOLDER_NAME)
 
@@ -130,6 +120,8 @@ def checkpoint_model(model, optimizer, lr_scheduler, loss,
         'loss': loss,
         'avg_length': avg_length
     }, fname)
+
+    wandb.save(fname)
 
 
 def _moving_avg(x, N=10):
@@ -149,11 +141,11 @@ def plot_it(losses, path_lengths):
     plt.show()
 
 
-""" A function to plot solutions
-"""
-
-
-def plot_solution(coords, mat, solution):
+def plot_solution(coords, mat, solution, title):
+    """
+    A function to plot solutions
+    """
+    plt.figure()
     plt.scatter(coords[:, 0], coords[:, 1])
     n = len(coords)
 
@@ -164,4 +156,34 @@ def plot_solution(coords, mat, solution):
     i, next_i = solution[-1], solution[0]
     plt.plot([coords[i, 0], coords[next_i, 0]], [coords[i, 1], coords[next_i, 1]], 'k', lw=2, alpha=0.8)
     plt.plot(coords[solution[0], 0], coords[solution[0], 1], 'x', markersize=10)
+    plt.title(title)
     plt.show()
+
+
+def download_wandb_models_and_return_list(project_name, run_name):
+    # Initialize Wandb API
+    api = wandb.Api()
+    path = f"{project_name}/{run_name}"
+    # Get the run
+    run = api.run(path)
+
+    # List all files in the run
+    all_files = run.files()
+
+    # Filter out the .tar files (models)
+    model_files = [f for f in all_files if f.name.endswith('.tar')]
+
+    # Download the models to a desired folder
+    download_folder = "downloaded_models"
+    if not os.path.exists(download_folder):
+        os.makedirs(download_folder)
+
+    for file in model_files:
+        # Check if the file already exists
+        if os.path.exists(os.path.join(download_folder, file.name)):
+            print(f"File {file.name} already exists in {download_folder} (skipping)")
+            continue
+        file.download(replace=True, root=download_folder)
+        print(f"Downloaded {file.name} to {download_folder}")
+
+    return all_files

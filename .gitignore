@@ -164,6 +164,7 @@ cython_debug/
 # We don't need to keep models and wandb folders at this point
 models/
 wandb/
+downloaded_models/
 
 # We shouldn't store senseitive information in the repo
 config.ini

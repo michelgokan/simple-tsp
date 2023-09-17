@@ -2,6 +2,7 @@ from collections import namedtuple
 
 import torch
 import wandb
+import configparser
 
 """ Note: the code is not optimized for GPU
 """
@@ -31,12 +32,24 @@ FOLDER_NAME = './models'  # where to checkpoint the best models
 
 State = namedtuple('State', ('W', 'coords', 'partial_solution'))
 
-# start a new wandb run to track this script
-wandb.init(project="tsp", config={
-        "learning_rate": INIT_LR,
-        "batch_size": BATCH_SIZE,
-        "architecture": "DQN",
-        "dataset": "",
-        "epochs": NR_EPISODES,
-    }
-)
+# Initialize the configparser and read from config.ini
+config = configparser.ConfigParser()
+config.read('config.ini')
+WANDB_RUN_ID = config['DEFAULT']['WANDB_RUN_ID']
+WANDB_RUN_NAME = config['DEFAULT']['WANDB_RUN_NAME']
+WANDB_PROJECT_NAME = config['DEFAULT']['WANDB_PROJECT_NAME']
+WANDB_CONFIG = {
+    "learning_rate": INIT_LR,
+    "batch_size": BATCH_SIZE,
+    "architecture": "DQN",
+    "dataset": "",
+    "epochs": NR_EPISODES,
+}
+
+# If WANDB_RUN_ID empty then set LOAD_FROM_WANDB_OR_LOCALLY to locally
+if WANDB_RUN_ID == "" or WANDB_PROJECT_NAME == "":
+    LOAD_FROM_WANDB_OR_LOCALLY = "locally"
+else:
+    LOAD_FROM_WANDB_OR_LOCALLY = "wandb"
+
+SAVE_IN_WANDB = True

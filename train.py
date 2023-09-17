@@ -46,6 +46,10 @@ path_lengths = []
 
 # keep track of median path length for model checkpointing
 current_min_med_length = float('inf')
+# start a new wandb run to track this script
+
+if v.SAVE_IN_WANDB:
+    wandb.init(project=v.WANDB_PROJECT_NAME, name=v.WANDB_RUN_NAME, config=v.WANDB_CONFIG)
 
 for episode in range(v.NR_EPISODES):
     # sample a new random graph
