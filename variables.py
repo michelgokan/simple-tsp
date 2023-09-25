@@ -1,8 +1,7 @@
+import configparser
 from collections import namedtuple
 
 import torch
-import wandb
-import configparser
 
 """ Note: the code is not optimized for GPU
 """

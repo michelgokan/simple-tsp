@@ -4,7 +4,7 @@ import torch.nn as nn
 import variables as v
 
 
-class QFunction():
+class QFunction:
     def __init__(self, model, optimizer, lr_scheduler):
         self.model = model  # The actual QNet
         self.optimizer = optimizer
